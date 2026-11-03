@@ -36,7 +36,7 @@ namespace LINQ02
             var querySyntax = from c in customers
                               from o in c.Orders
                               where o.OrderDate.Year >= 1997
-                              select new {c.CustomerID, o.OrderDate};
+                              select new { c.CustomerID, o.OrderDate };
 
 
             foreach (var item in querySyntax) Console.WriteLine($"{item.CustomerID} - {item.OrderDate}");
@@ -95,15 +95,78 @@ namespace LINQ02
 
 
             #region Q010
-            bool res010 = ProductList.Where(p => p.Category == "Seafood").All(p => p.UnitPrice > 0)
-  
-                Console.WriteLine($"All seafood in stock? {res010}");
+            bool res010 = ProductList.Where(p => p.Category == "Seafood").All(p => p.UnitPrice > 0);
+
+            Console.WriteLine($"All seafood in stock? {res010}");
 
 
 
             #endregion
 
+            #region Q011
+            int[] ids = { 3, 9, 13, 18 };
 
+
+            Console.WriteLine($"Contains 9  {ids.Contains(9)}");
+
+
+            #endregion
+
+            #region Q012
+            Console.WriteLine($"-=---=-=-=---=-=-");
+
+            var resQ012 = ProductList.GroupBy(p => p.Category);
+
+            foreach (var g in resQ012)
+            {
+                Console.WriteLine($"{g.Key} ({g.Count()})");
+                foreach (var p in g) Console.WriteLine($"{p.ProductName}");
+            }
+
+
+            #endregion
+
+
+
+            #region Q013
+
+            var res013 = ProductList.GroupBy(p => p.Category)
+                 .Select(g => new { Category = g.Key, Names = g.Select(p => p.ProductName) });
+
+
+            foreach (var g in res013)
+            {
+                Console.WriteLine(g.Category);
+                foreach (var n in g.Names) Console.WriteLine($"{n}");
+            }
+
+            #endregion
+
+            #region Q014
+
+            var res014 = ProductList.GroupBy(p => p.Category).Where(g => g.Count() > 3);
+
+
+
+            foreach (var g in res014) Console.WriteLine($"{g.Key}: {g.Count()}");
+            #endregion
+
+            #region Q015
+
+            var res015 = from c in customers
+                         group c by c.Country into g
+                         select new
+                         {
+                             Country = g.Key,
+                             Count = g.Count(),
+                             TotalOrderValue = g.Sum(c => c.Orders.Sum(o => o.Total))
+                         };
+
+            foreach (var x in res015) Console.WriteLine($"{x.Country} | {x.Count} | {x.TotalOrderValue}");
+            #endregion
+
+
+      
         }
     }
 }
