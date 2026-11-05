@@ -165,8 +165,114 @@ namespace LINQ02
             foreach (var x in res015) Console.WriteLine($"{x.Country} | {x.Count} | {x.TotalOrderValue}");
             #endregion
 
+            #region Q016
 
-      
+            Console.WriteLine($"Total unites: {ProductList.Sum(p => p.UnitsInStock)}");
+
+            #endregion
+
+            #region Q017
+            Console.WriteLine($"Cheapest : ${ProductList.Min(p => p.UnitPrice)}C2");
+            Console.WriteLine($"Most expensive : {ProductList.Max(p => p.UnitPrice):C2}");
+
+
+            #endregion
+
+
+            #region Q018
+
+            var res018 = ProductList.Select(p => p.Category).Distinct();
+
+            foreach (var c in res018) Console.WriteLine(c);
+
+
+            #endregion
+
+
+            #region Q019
+
+            int[] setA = { 1, 3, 5, 7, 9, 11, 13 };
+            int[] setB = { 3, 6, 9, 12, 15, 13 };
+
+            Console.WriteLine(string.Join(", ", setA.Except(setB)));
+
+            #endregion
+
+
+            #region Q020
+
+            string[] list1 = { "Germany", "France", "UK", "Spain" };
+            string[] list2 = { "france", "SPAIN", "Italy" };
+
+            Console.WriteLine(string.Join(", ", list1.Except(list2, StringComparer.OrdinalIgnoreCase)));
+
+
+            #endregion
+
+
+            #region Q021
+
+            var resQ021 = ProductList.ToDictionary(p => p.ProductID);
+
+            Console.WriteLine(resQ021[18]);
+
+            #endregion
+
+
+            #region Q022
+
+            var res022 = ProductList.First(p => p.UnitPrice > 50M);
+
+            Console.WriteLine(res022);
+
+            #endregion
+
+
+            #region Q023
+
+            var res023 = ProductList.FirstOrDefault(p => p.UnitPrice > 600M);
+
+            Console.WriteLine(res023 is null ? "No product found" : res023.ToString());
+
+            #endregion
+
+
+            #region Q024
+
+            var res024 = Enumerable.Range(1, 10).Select(i => $"7 x {i} = {7 * i}");
+
+            foreach (var row in res024) Console.WriteLine(row);
+
+            #endregion
+
+
+            #region Q025
+
+            var res025 = Enumerable.Range(1, 30).Where(n => n % 2 == 0);
+
+            Console.WriteLine(string.Join(",", res025));
+
+            #endregion
+
+
+            #region Q026
+
+            var res026 = ProductList.Take(3).Select(p => p.ProductName).Concat(customers.Take(3).Select(c => c.CustomerName));
+
+
+            foreach (var row in res026) Console.WriteLine(row);
+            #endregion
+
+
+
+            #region Q027
+
+            var resQ027 = ProductList.Zip(customers, (p, c) => $"{p.ProductName} sold to {c.CustomerName}");
+
+
+            foreach (var s in resQ027) Console.WriteLine(s);
+            #endregion
+
         }
     }
 }
